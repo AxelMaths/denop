@@ -3,6 +3,38 @@ import threading
 
 csv_file_spectra = threading.Semaphore()
 
+list_of_tempory_files = [] 
+
+
+def totalSearch(spectra_file_name, fasta_file_name):
+    """
+    To launch a search on a whole fasta file         
+
+    """
+    pass
+
+
+def cut_a_fasta_file(fasta_file_name):
+    """
+    Cut a fasta file with several sequence to several fasta file with only one sequence
+
+
+    """
+    with open(fasta_file_name, 'r') as fasta_file:
+        list_of_lines = fasta_file.readlines()
+        list_of_lines = [line for line in list_of_lines if line != "\n"] # we delete the empty lines
+        index = 0 
+        while index < len(list_of_lines)-1:
+            head = list_of_lines[index]
+            seq = list_of_lines[index+1]
+            with open("/tmp/"+fasta_file_name+str(index),'a') as short_fasta_file:
+                short_fasta_file.write(head)
+                short_fasta_file.write(seq)
+            list_of_tempory_files.append("/tmp/"+fasta_file_name+str(index))
+            index += 2
+    return 0
+
+
 
 def simpleSearch(spectra_file, fasta_file_name):
     """
@@ -51,7 +83,8 @@ if __name__ == '__main__':
     import doctest
     # to test the different functions 
     doctest.testmod()
-    
+        
+    cut_a_fasta_file("dna_function.py")
 
 
 
