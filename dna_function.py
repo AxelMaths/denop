@@ -1,21 +1,8 @@
 from Bio.Seq import Seq
 import threading
-
+from debug import printif
 
 csv_amino_acid_semaphore = threading.Semaphore()
-Debug = False
-
-def printif(text, debug = Debug):
-    """
-    Print some data if and only if the variable debug is set True
-    
-    >>> printif("hello", debug=True)
-    hello
-    >>> printif("None", debug=False)
-    
-    """
-    if debug:
-        print(text)
 
 
 def seq_to_amin(seq, dico_to_save, key):

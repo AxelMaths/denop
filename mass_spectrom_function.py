@@ -75,8 +75,6 @@ def simpleSearch(spectra_file, fasta_file_name):
     Search the peptide from a spectra_file hitting with the sequence from a fasta_file_name
 
 
-
-
     """
     
     with open(fasta_file_name, 'r') as fasta_file:
