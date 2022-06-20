@@ -57,7 +57,8 @@ def simpleSearch(spectra_file, fasta_file_name):
         main_key = fasta_file.readline()
         # the sequence
         sequence = fasta_file.readline()
-
+    
+    # we launched the peptide tuto 
     protein_ids = []
     peptide_ids = []
 
@@ -71,7 +72,7 @@ def simpleSearch(spectra_file, fasta_file_name):
         for hit in peptide_id.getHits():
             pept.append(hit.getSequence())
     
-
+    # we saved the results in a csv file to be analysed
     csv_file_spectra.acquire()
     with open(fasta_file_name+"_vs_"+spectra_file+".csv",'a') as csv_file:
         for p in pept:
