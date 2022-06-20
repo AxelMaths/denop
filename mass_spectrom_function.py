@@ -22,14 +22,19 @@ def cut_a_fasta_file(fasta_file_name):
     """
     with open(fasta_file_name, 'r') as fasta_file:
         list_of_lines = fasta_file.readlines()
-        list_of_lines = [line for line in list_of_lines if line != "\n"] # we delete the empty lines
+        # we delete the empty lines
+        list_of_lines = [line for line in list_of_lines if line != "\n"] 
         index = 0 
         while index < len(list_of_lines)-1:
+            # while it's not the end of file
+            # we save the sequence and its head 
             head = list_of_lines[index]
             seq = list_of_lines[index+1]
+            # we create a new temp file with this header and this sequence 
             with open("/tmp/"+fasta_file_name+str(index),'a') as short_fasta_file:
                 short_fasta_file.write(head)
                 short_fasta_file.write(seq)
+            # we save the name of file to delete it at the end
             list_of_tempory_files.append("/tmp/"+fasta_file_name+str(index))
             index += 2
     return 0
