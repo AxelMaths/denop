@@ -35,7 +35,7 @@ def totalSearch(spectra_file_name, fasta_file_name):
     # we wait each job 
     for thread in list_threadings:
         thread.join()
-    
+     
 
     return 0
 
@@ -106,7 +106,8 @@ def simpleSearch(spectra_file, fasta_file_name):
             csv_file.write(fasta_file_name+","+spectra_file+","+main_key+","+str(p)+"\n")
     csv_file_spectra.release()
     
-    
+    print(f"Done for the fasta file {fasta_file_name} and the spectra file {spectra_file}\n")
+
     return protein_ids, peptide_ids
 
 
