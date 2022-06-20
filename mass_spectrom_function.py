@@ -8,6 +8,18 @@ csv_file_spectra = threading.Semaphore()
 list_of_tempory_files = [] 
 
 
+def clean_temp_files_created():
+    """
+    To delete the tempory files which created by the function cut_a_fasta_file
+
+    """
+    
+    files = " ".join(list_of_tempory_files)
+    # we use only one system call to reduce hardware complexity
+    os.system("rm "+files)
+
+
+
 def totalSearch(spectra_file_name, fasta_file_name):
     """
     To launch a search on a whole fasta file         
@@ -122,8 +134,7 @@ if __name__ == '__main__':
     # to test the different functions 
     doctest.testmod()
         
-    cut_a_fasta_file("dna_function.py")
-    totalSearch("/Isiprod1/ext/Axel/Input/ms_data4/20022102.mgf","/Isiprod1/ext/Axel/Input/PDB/pdb_seqres.fasta")
+    totalSearch("20022102.mzML","/Isiprod1/ext/Axel/Input/PDB/pdb_seqres.fasta")
 
 
 
