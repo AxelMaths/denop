@@ -15,7 +15,7 @@ def totalSearch(spectra_file_name, fasta_file_name):
     """
     
     list_threadings=[]
-    
+     
     # we split the fasta file into multiple files
     cut_a_fasta_file(fasta_file_name)
     # we list the shorter files in tempory directory
@@ -23,7 +23,7 @@ def totalSearch(spectra_file_name, fasta_file_name):
     # we select only the files about the current fasta_file_name
     list_of_files_for_the_current_fasta_file = [ "/tmp/"+a for a in list_of_files_in_tmp if fasta_file_name in a]
     # we display for the debug
-    printif(list_of_files_for_the_current_fasta_file)
+    #printif(list_of_files_for_the_current_fasta_file)
 
     # for each file, we launch a thread to analyse each spectra file
     for short_fasta_file in list_of_files_for_the_current_fasta_file:
@@ -48,6 +48,8 @@ def cut_a_fasta_file(fasta_file_name):
 
     """
     with open(fasta_file_name, 'r') as fasta_file:
+        fasta_file_name = fasta_file_name.split("/")[-1]
+        print(fasta_file_name)
         list_of_lines = fasta_file.readlines()
         # we delete the empty lines
         list_of_lines = [line for line in list_of_lines if line != "\n"] 
@@ -87,8 +89,12 @@ def simpleSearch(spectra_file, fasta_file_name):
     protein_ids = []
     peptide_ids = []
 
-    SimpleSearchEngineAlgorithm().search(spectra_file, fasta_file, protein_ids, peptide_ids)
+    SimpleSearchEngineAlgorithm().search(spectra_file, fasta_file_name, protein_ids, peptide_ids)
     
+    # we delete the path to use only the file name
+    fasta_file_name = fasta_file_name.split("/")[-1]
+    fasta_name = fasta_file_name.split(".")[0]
+    print(fasta_name)
 
     pept = []
     
@@ -101,7 +107,7 @@ def simpleSearch(spectra_file, fasta_file_name):
     csv_file_spectra.acquire()
     with open(fasta_file_name+"_vs_"+spectra_file+".csv",'a') as csv_file:
         for p in pept:
-            csv_file.write(fasta_file_name+","+spectra_file+","+main_key+","+str(p)+"\n")
+            csv_file.write(fasta_name+","+spectra_file+","+main_key+","+str(p)+"\n")
     csv_file_spectra.release()
     
     print(f"Done for the fasta file {fasta_file_name} and the spectra file {spectra_file}\n")
@@ -117,7 +123,7 @@ if __name__ == '__main__':
     doctest.testmod()
         
     cut_a_fasta_file("dna_function.py")
-
+    totalSearch("/Isiprod1/ext/Axel/Input/ms_data4/20022102.mgf","/Isiprod1/ext/Axel/Input/PDB/pdb_seqres.fasta")
 
 
 
