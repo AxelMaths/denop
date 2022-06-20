@@ -1,5 +1,7 @@
 from pyopenms import *
 import threading
+import os
+
 
 csv_file_spectra = threading.Semaphore()
 
@@ -11,7 +13,32 @@ def totalSearch(spectra_file_name, fasta_file_name):
     To launch a search on a whole fasta file         
 
     """
-    pass
+    
+    list_threadings=[]
+    
+    # we split the fasta file into multiple files
+    cut_a_fasta_file(fasta_file_name)
+    # we list the shorter files in tempory directory
+    list_of_files_in_tmp = os.listdir(path="/tmp")
+    # we select only the files about the current fasta_file_name
+    list_of_files_for_the_current_fasta_file = [ "/tmp/"+a for a in list_of_files_in_tmp if fasta_file_name in a]
+    # we display for the debug
+    printif(list_of_files_for_the_current_fasta_file)
+
+    # for each file, we launch a thread to analyse each spectra file
+    for short_fasta_file in list_of_files_for_the_current_fasta_file:
+        # we create the thread, for the analysis
+        list_threadings.append(threading.Thread(target=simpleSearch, args=(spectra_file, short_fasta_file,)))
+        # we launch the thread
+        list_threadings[-1].start()
+
+    # we wait each job 
+    for thread in list_threadings:
+        thread.join()
+    
+
+    return 0
+
 
 
 def cut_a_fasta_file(fasta_file_name):
@@ -79,7 +106,7 @@ def simpleSearch(spectra_file, fasta_file_name):
             csv_file.write(fasta_file_name+","+spectra_file+","+main_key+","+str(p)+"\n")
     csv_file_spectra.release()
     
-
+    
     return protein_ids, peptide_ids
 
 
